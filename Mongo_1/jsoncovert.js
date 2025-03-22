@@ -13,3 +13,8 @@ console.log("Bsondata", Bsondata);
 const jsondata = BSON.deserialize(Bsondata);
 
 console.log("jsondata", jsondata);
+
+
+// npm i -g bson  To check where NPM installs global packages on your system, run:
+
+// npm root -g

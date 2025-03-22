@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Keerthanas2000/Backend#readme",
   "dependencies": {
-    "bson": "^6.10.3"
+    "bson": "^6.10.3",
+    "express": "^4.21.2"
   }
 }

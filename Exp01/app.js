@@ -29,5 +29,5 @@ app.listen(port, ()=>
 })
 
 
-// Copy-Item originalFile.js duplicateFile.js
+// to copy file Copy-Item originalFile.js duplicateFile.js
 

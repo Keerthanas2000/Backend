@@ -30,3 +30,204 @@
 - **503 Service Unavailable** → Server is temporarily unavailable (maintenance or overload).
 - **504 Gateway Timeout** → Upstream server did not respond in time.
 
+
+
+Request (req) Object Methods: Express.js Request Documentation
+
+https://expressjs.com/en/4x/api.html#req
+Response (res) Object Methods: Express.js Response Documentation
+
+https://expressjs.com/en/5x/api.html#res
+
+Request (req) Methods (Fetching Data from Client)
+1. req.params → Get route parameters
+📌 Usage: Extract dynamic values from the URL path.
+
+
+app.get('/user/:id', (req, res) => {
+    res.send(`User ID: ${req.params.id}`);
+});
+🔹 Pros:
+✅ Useful for getting specific resources (e.g., /user/123).
+✅ Works well with RESTful APIs.
+
+🔻 Cons:
+❌ Cannot handle optional parameters.
+❌ Limited to predefined route structures.
+
+2. req.query → Get query string parameters
+📌 Usage: Extract values from the URL after ?
+
+
+app.get('/search', (req, res) => {
+    res.send(`Searching for ${req.query.name}`);
+});
+🔹 Pros:
+✅ Great for filters and searches (/search?name=John).
+✅ Can have multiple optional parameters.
+
+🔻 Cons:
+❌ Data is visible in the URL (not secure for sensitive data).
+❌ Cannot handle complex structured data.
+
+3. req.body → Get data sent in the request body
+📌 Usage: Used in POST and PUT requests to send data.
+
+
+app.use(express.json()); // Required middleware  
+app.post('/user', (req, res) => {
+    res.send(`Received name: ${req.body.name}`);
+});
+🔹 Pros:
+✅ Best for sending form or JSON data.
+✅ Secure since data is not exposed in the URL.
+
+🔻 Cons:
+❌ Requires express.json() middleware.
+❌ Cannot be used in GET requests.
+
+4. req.headers → Get headers sent by the client
+📌 Usage: Retrieve request headers.
+
+
+app.get('/headers', (req, res) => {
+    res.send(`User-Agent: ${req.headers['user-agent']}`);
+});
+🔹 Pros:
+✅ Useful for authentication (Authorization header).
+✅ Helps identify request sources (e.g., User-Agent).
+
+🔻 Cons:
+❌ Headers are not always reliable (clients can modify them).
+❌ Some headers might be missing based on the request type.
+
+5. req.method → Check HTTP method (GET, POST, etc.)
+📌 Usage: Determine the HTTP method used.
+
+
+app.use((req, res, next) => {
+    console.log(`Request Method: ${req.method}`);
+    next();
+});
+🔹 Pros:
+✅ Helps handle different request types in a single route.
+✅ Useful for logging or method-based validation.
+
+🔻 Cons:
+❌ Requires manual checking inside middleware or routes.
+
+6. req.path → Get the request path
+📌 Usage: Retrieve the URL path without query parameters.
+
+
+app.use((req, res, next) => {
+    console.log(`Requested Path: ${req.path}`);
+    next();
+});
+🔹 Pros:
+✅ Helps in logging and debugging.
+✅ Useful for custom routing logic.
+
+🔻 Cons:
+❌ Cannot retrieve full URL (use req.originalUrl for that).
+
+7. req.ip → Get the IP address of the client
+📌 Usage: Get the request sender's IP address.
+
+
+app.get('/ip', (req, res) => {
+    res.send(`Your IP: ${req.ip}`);
+});
+🔹 Pros:
+✅ Useful for tracking/logging user activity.
+✅ Helps in security checks (e.g., rate limiting).
+
+🔻 Cons:
+❌ Might not work correctly behind proxies (use req.ips).
+
+Response (res) Methods (Sending Data to Client)
+1. res.send() → Send a response (text, JSON, etc.)
+📌 Usage: Send any type of response.
+
+
+app.get('/hello', (req, res) => {
+    res.send('Hello, World!');
+});
+🔹 Pros:
+✅ Supports various types (text, JSON, HTML).
+✅ Automatically sets Content-Type.
+
+🔻 Cons:
+❌ Cannot send multiple responses in the same request.
+
+2. res.json() → Send JSON data
+📌 Usage: Send a JSON response.
+
+
+app.get('/user', (req, res) => {
+    res.json({ id: 1, name: 'John Doe' });
+});
+🔹 Pros:
+✅ Best for APIs, automatically sets Content-Type: application/json.
+✅ Prevents manual JSON stringification.
+
+🔻 Cons:
+❌ Only works with JSON data (use res.send() for other types).
+
+3. res.status() → Set the HTTP status code
+📌 Usage: Modify the HTTP status response.
+
+
+app.get('/notfound', (req, res) => {
+    res.status(404).send("Page Not Found");
+});
+🔹 Pros:
+✅ Helps in proper API responses (e.g., 400 Bad Request).
+✅ Useful for error handling.
+
+🔻 Cons:
+❌ Must be used before sending a response (res.send()).
+
+4. res.redirect() → Redirect to another URL
+📌 Usage: Redirect the user to a new page.
+
+
+app.get('/old-route', (req, res) => {
+    res.redirect('/new-route');
+});
+🔹 Pros:
+✅ Useful for handling old routes or authentication flows.
+✅ Supports relative and absolute URLs.
+
+🔻 Cons:
+❌ Can be confusing      misused (e.g., infinite redirects).
+
+5. res.render() → Render an HTML page (used with templating engines)
+📌 Usage: Render a view using a templating engine like EJS or Pug.
+
+
+app.set('view engine', 'ejs');
+app.get('/home', (req, res) => {
+    res.render('index', { title: 'Home Page' });
+});
+🔹 Pros:
+✅ Allows dynamic content rendering.
+✅ Integrates well with templating engines.
+
+🔻 Cons:
+❌ Requires setting up a templating engine (ejs, pug, etc.).
+
+6. res.sendFile() → Send a file
+📌 Usage: Serve files from the server.
+
+
+app.get('/file', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+🔹 Pros:
+✅ Useful for serving static files.
+✅ Handles file streaming efficiently.
+
+🔻 Cons:
+❌ Needs an absolute path (__dirname + "/file").
+

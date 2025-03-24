@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Keerthanas2000/Backend#readme",
   "dependencies": {
     "bson": "^6.10.3",
+    "cookie-parser": "^1.4.7",
     "express": "^4.21.2"
   },
   "devDependencies": {

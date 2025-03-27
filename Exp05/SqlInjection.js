@@ -7,22 +7,16 @@
 // Example of a Vulnerable Query
 // Let’s say we have an insecure login system:
 
-// js
-// Copy
-// Edit
+
 // let query = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`;
 // Here, if the attacker enters:
 
-// plaintext
-// Copy
-// Edit
+
 // email: admin' --  
 // password: anything
 // The query will become:
 
-// sql
-// Copy
-// Edit
+
 // SELECT * FROM users WHERE email = 'admin' --' AND password = 'anything'
 // Since -- starts a SQL comment, the rest of the query is ignored!
 // This means no password check happens, and the attacker logs in as "admin".
@@ -31,9 +25,7 @@
 // ✅ Use Parameterized Queries (Prepared Statements)
 // Instead of inserting user input directly into a query, use placeholders:
 
-// js
-// Copy
-// Edit
+
 // let query = "SELECT * FROM users WHERE email = ? AND password = ?";
 // Connection_info.query(query, [email, password], (err, result) => {
 //   if (err) {
@@ -58,43 +50,31 @@
 // 1️⃣ Retrieving All Users
 // If the query is:
 
-// sql
-// Copy
-// Edit
+
 // SELECT * FROM users WHERE email = 'user@example.com' AND password = 'password';
 // An attacker can enter:
 
-// plaintext
-// Copy
-// Edit
+
 // email: ' OR 1=1 --
 // password: anything
 // Now the query becomes:
 
-// sql
-// Copy
-// Edit
+
 // SELECT * FROM users WHERE email = '' OR 1=1 --' AND password = 'anything';
 // Since 1=1 is always true, the attacker retrieves all users.
 
 // 2️⃣ Deleting All Data
 // If a form field is used in a DELETE query:
 
-// js
-// Copy
-// Edit
+
 // let query = `DELETE FROM users WHERE email = '${email}'`;
 // An attacker can enter:
 
-// plaintext
-// Copy
-// Edit
+
 // email: ' OR 1=1 --
 // Now the query becomes:
 
-// sql
-// Copy
-// Edit
+
 // DELETE FROM users WHERE email = '' OR 1=1 --';
 // This deletes all users in the database!
 
